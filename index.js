@@ -22,31 +22,6 @@ const run = async () => {
     const productCollection = db.collection("products");
     const blogCollection = db.collection("blogs");
 
-    // Moon tech start
-    app.get("/products", async (req, res) => {
-      const cursor = productCollection.find({});
-      const product = await cursor.toArray();
-
-      res.send({ status: true, data: product });
-    });
-
-    app.post("/product", async (req, res) => {
-      const product = req.body;
-
-      const result = await productCollection.insertOne(product);
-
-      res.send(result);
-    });
-
-    app.delete("/product/:id", async (req, res) => {
-      const id = req.params.id;
-
-      const result = await productCollection.deleteOne({ _id: ObjectId(id) });
-      res.send(result);
-    });
-    // Moon tech end
-
-
     app.post("/blog", async (req, res) => {
       const blog = req.body;
 
@@ -58,10 +33,23 @@ const run = async () => {
     app.get("/blogs", async (req, res) => {
       const cursor = blogCollection.find({});
       const blog = await cursor.toArray();
-
       res.send({ status: true, data: blog });
     });
 
+
+    app.get("/blog/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const result = await blogCollection.findOne({ _id: ObjectId(id) });
+      res.send(result);
+    });
+
+
+    app.delete("/blog/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await blogCollection.deleteOne({ _id: ObjectId(id) });
+      res.send(result);
+    });
 
   } finally {
   }
@@ -78,6 +66,3 @@ app.listen(port, () => {
 });
 
 
-
-// pass:W5AS8KNAkZZ8cnet
-// id:tauhid-redux
