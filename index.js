@@ -19,7 +19,6 @@ const client = new MongoClient(uri, {
 const run = async () => {
   try {
     const db = client.db("Redux");
-    const productCollection = db.collection("products");
     const blogCollection = db.collection("blogs");
 
     app.post("/blog", async (req, res) => {
@@ -48,6 +47,28 @@ const run = async () => {
     app.delete("/blog/:id", async (req, res) => {
       const id = req.params.id;
       const result = await blogCollection.deleteOne({ _id: ObjectId(id) });
+      res.send(result);
+    });
+
+    app.put("/blog/:id", async (req, res) => {
+      const id = req.params.id;
+      requestData = req.body.blog;
+      // console.log(requestData.status);
+      const query = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedBlog = {
+        $set: {
+          name: requestData.name,
+          occupation: requestData.occupation,
+          subject: requestData.subject,
+          date: requestData.date,
+          gender: requestData.gender,
+          image: requestData.image,
+          textarea: requestData.textarea,
+          status: requestData.status,
+        }
+      };
+      const result = await blogCollection.updateOne(query, updatedBlog, options);
       res.send(result);
     });
 
