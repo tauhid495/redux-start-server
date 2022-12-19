@@ -72,6 +72,34 @@ const run = async () => {
       res.send(result);
     });
 
+
+    // for nex class 
+    const productCollection = db.collection("product");
+
+    app.get("/products", async (req, res) => {
+      const cursor = productCollection.find({});
+      const product = await cursor.toArray();
+
+      res.send({ status: true, data: product });
+    });
+
+    app.post("/product", async (req, res) => {
+      const product = req.body;
+
+      const result = await productCollection.insertOne(product);
+
+      res.send(result);
+    });
+
+    app.delete("/product/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const result = await productCollection.deleteOne({ _id: ObjectId(id) });
+      res.send(result);
+    });
+
+
+
   } finally {
   }
 };
