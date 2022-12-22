@@ -20,6 +20,7 @@ const run = async () => {
   try {
     const db = client.db("Redux");
     const blogCollection = db.collection("blogs");
+    const productCollection = db.collection("products");
 
     app.post("/blog", async (req, res) => {
       const blog = req.body;
@@ -74,7 +75,7 @@ const run = async () => {
 
 
     // for nex class 
-    const productCollection = db.collection("product");
+
 
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
