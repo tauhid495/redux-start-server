@@ -113,6 +113,23 @@ const run = async () => {
       res.send({ status: true, data: result });
     });
 
+    app.get('/jobs', async (req, res) => {
+      const cursor = jobCollection.find({});
+      const result = await cursor.toArray();
+      res.send({ status: true, data: result });
+    });
+
+    app.get('/job/:id', async (req, res) => {
+      const id = req.params.id;
+      const result = await jobCollection.findOne({ _id: ObjectId(id) });
+      res.send({ status: true, data: result });
+    });
+
+    app.post('/job', async (req, res) => {
+      const job = req.bosy;
+      const result = await jobCollection.insertOne(job);
+      res.send({ status: true, data: result });
+    });
 
   } finally {
   }
