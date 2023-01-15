@@ -22,6 +22,7 @@ const run = async () => {
     const blogCollection = db.collection("blogs");
     const productCollection = db.collection("products");
     const userCollection = db.collection('user');
+    const jobCollection = db.collection('job');
 
     app.post("/blog", async (req, res) => {
       const blog = req.body;
@@ -36,7 +37,6 @@ const run = async () => {
       const blog = await cursor.toArray();
       res.send({ status: true, data: blog });
     });
-
 
     app.get("/blog/:id", async (req, res) => {
       const id = req.params.id;
@@ -100,20 +100,19 @@ const run = async () => {
     });
 
     // Job Box
-    app.get("/users", async (req, res) => {
-      const cursor = userCollection.find({});
-      const product = await cursor.toArray();
-
-      res.send({ status: true, data: product });
-    });
 
     app.post("/user", async (req, res) => {
       const user = req.body;
-
       const result = await userCollection.insertOne(user);
-
       res.send(result);
     });
+
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await userCollection.findOne({ email });
+      res.send({ status: true, data: result });
+    });
+
 
   } finally {
   }
